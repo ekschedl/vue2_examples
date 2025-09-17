@@ -65,7 +65,7 @@
       </section>
 
       <section class="card">
-        <h2>v-model Input (lazy + trim)</h2>
+        <h2>v-model Input (lazy + trim) test</h2>
         <input v-model.lazy.trim="inputValue" placeholder="Tippe hier..." />
         <br />
         <p>Value: "{{ inputValue }}"</p>
@@ -80,7 +80,8 @@
         <p>Parent has: "{{ parentBananeValue }}"</p>
       </section>
 
-      <section class="card">git init
+      <section class="card">
+        git init
         <h2>v-on</h2>
         <div v-bind:class="{ yalClass: bgColor }">
           <p>Click the button to change background color of this DIV box.</p>
