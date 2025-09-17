@@ -185,6 +185,25 @@
           <p>{{ dataFromMySlot }}</p>
         </data-slot-component>
       </section>
+
+      <section class="card">
+        <h2>Example watch Option</h2>
+        <p>
+          The 'rangeVal' watcher is written with <code>immediate: true</code>,
+          so the value automatically jumps to 70 when the page first loads. If
+          you move the slider between 20 and 40, the value will snap to 20. If
+          you move it between 40 and 70, the value will snap to 70. Values below
+          20 or above 70 will remain unchanged.
+        </p>
+
+        <!-- Schieberegler, der direkt mit rangeVal verbunden ist -->
+        <input type="range" v-model="rangeVal" />
+
+        <!-- Anzeige vom aktuellen Wert -->
+        <p>
+          rangeVal: <span>{{ rangeVal }}</span>
+        </p>
+      </section>
     </div>
   </div>
 </template>
@@ -217,7 +236,26 @@ export default {
       imgUrl: imgFish,
       pVisible: false,
       divVisible: false,
+      rangeVal: 40,
     };
+  },
+  watch: {
+    rangeVal: {
+      handler(val) {
+        // Wenn Wert zwischen 20 und 70 liegt
+        if (val > 20 && val < 70) {
+          // kleiner als 40 → automatisch auf 20 setzen
+          if (val < 40) {
+            this.rangeVal = 20;
+          }
+          // größer/gleich 40 → automatisch auf 70 setzen
+          else {
+            this.rangeVal = 70;
+          }
+        }
+      },
+      immediate: true,
+    },
   },
   methods: {
     reset() {
@@ -387,5 +425,12 @@ img {
   height: 50px;
   overflow: scroll;
   background-color: lightcoral;
+}
+
+span {
+  padding: 3px;
+  font-weight: bold;
+  font-family: "Courier New", Courier, monospace;
+  background-color: lightgreen;
 }
 </style>
