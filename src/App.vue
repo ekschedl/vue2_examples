@@ -146,6 +146,45 @@
         <p>Hold 'Shift' key and press left mouse button on the image:</p>
         <img @click.left="onImgClick" :src="imgUrl" />
       </section>
+
+      <section class="card">
+        <h2>JavaScript Transition Hooks</h2>
+
+        <p>
+          This code hooks into "after-enter" so that after the initial animation
+          is done, a method runs that displays a red div.
+        </p>
+        <button @click="pVisible = true">Create p-tag!</button><br />
+        <Transition @after-enter="onAfterEnter">
+          <p v-show="pVisible" id="p1">Hello World!</p>
+        </Transition>
+        <br />
+        <div v-show="divVisible">
+          This appears after the "enter-active" phase of the transition.
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>mit SlotComponent</h2>
+        <p>
+          Die Komponente hat ein &lt;div&gt;-Element mit einem benannten
+          &lt;slot&gt;:
+          <code>topSlot</code>
+        </p>
+        <slot-component>
+          <template v-slot:topSlot>
+            Hello! ich bin Text von SlotElement
+          </template>
+        </slot-component>
+      </section>
+
+      <section class="card">
+        <h2>Local Component</h2>
+        <p>App.vue controls how local data from the scoped slot is rendered.</p>
+        <data-slot-component v-slot="{ dataFromMySlot }">
+          <p>{{ dataFromMySlot }}</p>
+        </data-slot-component>
+      </section>
     </div>
   </div>
 </template>
@@ -154,15 +193,18 @@
 import ChildComponentInput from "./components/ChildComponentInput.vue";
 import imgFish from "@/assets/img_fish.svg";
 import imgTiger from "@/assets/img_tiger.svg";
+import SlotComponent from "./components/SlotComponent.vue";
+import DataSlotComponent from "./components/DataSlotComponent.vue";
+
 export default {
-  components: { ChildComponentInput },
+  components: { ChildComponentInput, SlotComponent, DataSlotComponent },
   name: "App",
   data() {
     return {
       counter: 0,
       exists: false,
       word: "apple",
-      text: "I like , Thai beef salad, pho soup and tagine.", // text: 'I like burrito, pizza, Thai beef salad, pho soup and tagine.' Startwert
+      text: "I likeburrito , Thai beef salad, pho soup and tagine.", // text: 'I like burrito, pizza, Thai beef salad, pho soup and tagine.' Startwert
       imgs: ["pizza", "cake", "fish", "rice"],
       indexNbr: 0,
       inputValue: null,
@@ -173,6 +215,8 @@ export default {
       scrollTimes: 0,
       imgFishActive: true,
       imgUrl: imgFish,
+      pVisible: false,
+      divVisible: false,
     };
   },
   methods: {
@@ -190,6 +234,9 @@ export default {
       if (event.shiftKey) {
         this.changeImg();
       }
+    },
+    onAfterEnter() {
+      this.divVisible = true;
     },
   },
   computed: {
@@ -318,7 +365,7 @@ img {
   background-color: rgb(255, 255, 136);
 }
 #parent {
-  width: 250px;
+  width: 90%;
   background-color: lightpink;
 }
 #parent > div {
@@ -333,7 +380,7 @@ img {
 }
 
 .scroll {
-  margin: 10px;
+  margin: 10px 0;
   padding: 10px;
   border: dashed black 1px;
   width: 200px;
